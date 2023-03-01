@@ -1,0 +1,8 @@
+For real-time BCI:
+    - psychopy
+    - pylsl
+    
+For analyzing offline XDF files:
+    - numpy
+    - matplotlib
+    - pyxdf
