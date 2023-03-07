@@ -43,11 +43,17 @@ def loadxdf(fname):
         print('ERROR, EEG AND MARKER STREAM NOT FOUND!')
         return
         
-    # Create channel structure from stream info    
-    desc = eeg['info']['desc'][0]['channels'][0]['channel']
+    # Create channel structure from stream info (if available)
     channel = {}
-    for i in range(int(eeg['info']['channel_count'][0])):
-        channel[desc[i]['label'][0]] = i
+    num_chans = int(eeg['info']['channel_count'][0])
+    try:
+        desc = eeg['info']['desc'][0]['channels'][0]['channel']
+        for i in range(num_chans):
+            channel[desc[i]['label'][0]] = i
+    except:
+        print(f'WARNING: Data has {num_chans} channels, but no channel descriptions found. Creating generic channel info.')
+        for i in range(num_chans):
+            channel[f'Ch{i}'] = i
             
     # Let's also create time structures
     eeg_time = eeg['time_stamps']
