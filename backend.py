@@ -58,18 +58,18 @@ def main():
                 # SAVE YOUR DATA HERE IF YOU CARE TO AND IF YOU SAVED YOUR BUFFERS
                 print('Backend received die command; terminating.')
                 
-            if store_data and eeg is not None:
-                data.append(eeg)
-            
-            elif send_result:
-                send_result = False
-                # do processing/classification here
-                res = ['left', 'right'][random.randint(0, 1)] # inclusive
-                
-                # Wait 50ms then send a message (to give the task a chance to listen)
-                time.sleep(0.05)
-                print('Sent command')
-                results_out.push_sample(pylsl.vectorstr([res]))
+        if store_data and eeg is not None:
+            data.append(eeg)
+
+        elif send_result:
+            send_result = False
+            # do processing/classification here
+            res = ['left', 'right'][random.randint(0, 1)] # inclusive
+
+            # Wait 50ms then send a message (to give the task a chance to listen)
+            time.sleep(0.05)
+            print('Sent command')
+            results_out.push_sample(pylsl.vectorstr([res]))
             
     
 if __name__ == "__main__":
