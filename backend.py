@@ -1,3 +1,8 @@
+# Simple BCI backend for reading data. Does no filtering or classification.
+#
+# Created........: 28Feb2023 [ollie-d]
+# Last Modified..: 16Mar2023 [ollie-d]
+
 import pylsl
 import time
 import random
