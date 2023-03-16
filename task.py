@@ -1,11 +1,11 @@
 # Simplest BCI. Left/Right MI paradigm.
 #
+# Created........: 28Feb2023 [ollie-d]
+# Last Modified..: 28Feb2023 [ollie-d]
+#
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # !!! MAKE SURE refresh_rate IS SET TO YOUR MONITOR'S REFRESH RATE !!!
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#
-# Created........: 13Apr2021 [ollie-d]
-# Last Modified..: 13Apr2021 [ollie-d]
 
 import psychopy.visual
 import psychopy.event
@@ -15,6 +15,11 @@ import pylsl
 import random
 
 # Global variables
+#
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!! MAKE SURE refresh_rate IS SET TO YOUR MONITOR'S REFRESH RATE !!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 win = None # Global variable for window (Initialized in main)
 mrkstream_out = None # Global variable for LSL marker stream output (Initialized in main)
 results_in = None # Global variable for LSL result input (Initialized in main)
