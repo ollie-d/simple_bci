@@ -143,7 +143,7 @@ def epoch(EEG, epoch_s, epoch_e, event):
     e_ix = np.round(epoch_e   / dt).astype(int)
     
     # Epoch should be epochs x samples x channels
-    erp = np.zeros((len(onsets_ix), np.abs(s_ix)+e_ix, EEG['eeg_data'].shape[1]))
+    erp = np.zeros((len(onsets_ix), e_ix-s_ix, EEG['eeg_data'].shape[1]))
     for i in range(len(onsets_ix)):
         t0 = onsets_ix[i]
         try:
