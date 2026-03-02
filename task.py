@@ -81,7 +81,7 @@ def Paradigm(num_trials=1):
         for frame in range(MsToFrames(3000, refresh_rate)):
             # Send LSL marker on first frame
             if frame == 0:
-                mrkstream_out.push_sample(pylsl.vectorstr([trial]))
+                mrkstream_out.push_sample([trial])
             fixation.draw()
             win.flip()
             
@@ -98,7 +98,7 @@ def Paradigm(num_trials=1):
        
         # Flip screen and send blank
         win.flip()
-        mrkstream_out.push_sample(pylsl.vectorstr(['blank']))
+        mrkstream_out.push_sample(['blank'])
        
         # Wait until we get a valid result from the backend
         results = None
@@ -124,8 +124,8 @@ def MsToFrames(ms, fs):
     return np.round(ms / dt).astype(int);
 
 def lsl_mrk_outlet(name):
-    info = pylsl.stream_info(name, 'Markers', 1, 0, pylsl.cf_string, 'ID0123456789');
-    outlet = pylsl.stream_outlet(info, 1, 1)
+    info = pylsl.StreamInfo(name, 'Markers', 1, 0, pylsl.cf_string, 'ID0123456789');
+    outlet = pylsl.StreamOutlet(info, 1, 1)
     print('task.py created outlet.')
     return outlet
     
@@ -133,8 +133,8 @@ def lsl_inlet(name):
     # Resolve all marker streams
     inlet = None
     tries = 0
-    info = pylsl.resolve_stream('name', name)
-    inlet = pylsl.stream_inlet(info[0], recover=False)
+    info = pylsl.resolve_byprop('name', name)
+    inlet = pylsl.StreamInlet(info[0], recover=False)
     print(f'task.py has received the {info[0].type()} inlet.')
     return inlet
 
@@ -161,4 +161,6 @@ if __name__ == "__main__":
     
     # Run through paradigm
     Paradigm(4)
+    mrkstream_out.push_sample(['die'])
+    time.sleep(0.1)  # give backend time to receive the die marker
     

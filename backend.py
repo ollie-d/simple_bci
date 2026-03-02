@@ -13,8 +13,8 @@ mrkstream_in = None
 eeg_in = None
 
 def lsl_mrk_outlet(name):
-    info = pylsl.stream_info(name, 'Markers', 1, 0, pylsl.cf_string, 'ID66666666');
-    outlet = pylsl.stream_outlet(info, 1, 1)
+    info = pylsl.StreamInfo(name, 'Markers', 1, 0, pylsl.cf_string, 'ID66666666');
+    outlet = pylsl.StreamOutlet(info, 1, 1)
     print('backend.py created result outlet.')
     return outlet
     
@@ -22,8 +22,8 @@ def lsl_inlet(name):
     # Resolve all marker streams
     inlet = None
     tries = 0
-    info = pylsl.resolve_stream('name', name)
-    inlet = pylsl.stream_inlet(info[0], recover=False)
+    info = pylsl.resolve_byprop('name', name)
+    inlet = pylsl.StreamInlet(info[0], recover=False)
     print(f'backend.py has received the {info[0].type()} inlet.')
     return inlet
     
@@ -38,8 +38,12 @@ def main():
     print('main function started')
     while True and terminate_backend == False:
         # Constantly check for a marker
-        mrk, t_mrk = mrkstream_in.pull_sample(timeout=0)
-        eeg, t_eeg = eeg_in.pull_sample(timeout=0)
+        try:
+            mrk, t_mrk = mrkstream_in.pull_sample(timeout=0)
+            eeg, t_eeg = eeg_in.pull_sample(timeout=0)
+        except pylsl.LostError:
+            print('Stream lost; terminating backend.')
+            break
 
         # If we find a marker...
         if mrk is not None:
@@ -74,7 +78,7 @@ def main():
             # Wait 50ms then send a message (to give the task a chance to listen)
             time.sleep(0.05)
             print('Sent command')
-            results_out.push_sample(pylsl.vectorstr([res]))
+            results_out.push_sample([res])
             
     
 if __name__ == "__main__":
